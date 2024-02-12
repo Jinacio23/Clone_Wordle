@@ -1,0 +1,64 @@
+body{
+    background-color: #14161C;
+}
+
+header{
+    width: 100%;
+    height: 80px;
+    border-bottom: 1px solid #585858;
+}
+
+nav img{
+    height: 100%;
+    width: auto;
+    margin: 16px 0px 16px 100px;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 0px;
+}
+
+.board{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    column-gap: 2px;
+    margin-bottom: 30px;
+}
+
+.coluna .letra{
+    width: 62px;
+    height: 62px;
+    border: 1px solid #585858;
+    margin-bottom: 2px;
+}
+
+.teclado{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    /* margin-bottom: 50px; */
+}
+
+.teclado .linha>*{
+    width: 43px;
+    height: 58px;
+    border: none;
+    background-color: #818384;
+    color: #fff;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 26.5px;
+    text-align: center;
+}
+
+.teclado .linha .enter{
+    width: 83px;
+    font-size: 16px;
+    padding-top: 4px;
+}
