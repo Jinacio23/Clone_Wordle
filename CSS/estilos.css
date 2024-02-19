@@ -24,16 +24,31 @@ main{
 
 .board{
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    column-gap: 2px;
+    grid-template-rows: repeat(5, 1fr);
+    row-gap: 2px;
     margin-bottom: 30px;
 }
 
+.coluna{
+    display: flex;
+    gap: 4px;
+}
+
 .coluna .letra{
+    display: block;
     width: 62px;
     height: 62px;
     border: 1px solid #585858;
     margin-bottom: 2px;
+    background-color: #14161C;
+    color: #fff;
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    outline: none;
+}
+.letra.selecionado{
+    background-color: #222630;
 }
 
 .teclado{
