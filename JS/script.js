@@ -2,7 +2,7 @@ const letra = document.querySelectorAll('.letra')
 let fileira = document.querySelector('.coluna.l1')
 let nodes = fileira.children
 
-const palavra = ['canoa','balao','arpeu']
+const palavra = ['canoa','balao','arpeu','sagaz','amago','negro','termo','exito','mexer','nobre','senso','afeto','algoz','etica','plena','fazer','tenue','mutua','assim','vigor','sutil','aquém','porém','secao','fosse','poder','sanar','sobre','audaz','ideia','cerne','inato','moral','desde','muito','justo','honra','torpe','sonho','razao','futil','etnia','icone','amigo','anexo','egide','tange','lapso','haver','expor','dengo','tempo','entao']
 const alfabeto = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 let linha = 1
 
@@ -80,11 +80,13 @@ function checarResposta() {
 
     //caso resposta correta senão...
     if(tentativa.join("") == resposta.toUpperCase()){
+        adicionarCores(tentativa)
         alert('Parabéns, você acertou!')
         //reiniciar jogo
 
     } else {//proxima tentativa
         tentativaAtual()
+        adicionarCores(tentativa)
         //passa para próxima linha
         linha++
         if(linha < 7){//Máximo de tentativas permitidas 6, senão game over
@@ -99,8 +101,23 @@ function checarResposta() {
 }
 
 //Dicas/cores do jogo
-function adicionarCores() {
+function adicionarCores(palpValue) {
 //bgVerde - letra no local certo
 //bgAmarelo - letra existente, porém no lugar errado
 //bgVermelho - letra inexistente na palavra
+let trueValue = resposta.toUpperCase()
+let trueArr = trueValue.split('')
+// console.log(trueValue);
+// console.log(trueArr);
+
+for(let i = 0; i < nodes.length; i++){
+    if(palpValue[i] == trueArr[i]){
+        nodes[i].style.backgroundColor = 'green'
+    } else if(trueValue.includes(palpValue[i])){
+        nodes[i].style.backgroundColor = 'yellow'
+    } else {
+        nodes[i].style.backgroundColor = 'gray'
+    }
+}
+
 }
