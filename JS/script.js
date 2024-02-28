@@ -6,8 +6,6 @@ const palavra = ['canoa','balao','arpeu','sagaz','amago','negro','termo','exito'
 const alfabeto = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 let linha = 1
 
-//console.log(nodes);
-
 //Resposta final
 function SelecionarPalavra() {
     let x = Math.floor(Math.random() * palavra.length)
@@ -29,11 +27,25 @@ checarPalavra()
 
 //Controle de teclas (De A - Z)
 letra.forEach(addEventListener('keypress', (e) => {
+
     if(alfabeto.includes(e.key)){
-        return e.target.value = e.key.toUpperCase()
+        e.target.value = e.key.toUpperCase()
     } else {
         e.returnValue = false
     }
+
+    if(e.target.nextElementSibling !== null){//avança uma letra        
+        e.target.classList.remove('selecionado')
+        e.target.nextElementSibling.classList.add('selecionado')
+        e.target.nextElementSibling.focus()
+    }
+    
+    if (e.target.value == "" && e.target.previousElementSibling !== null){//recua uma letra
+        e.target.classList.remove('selecionado')
+        e.target.previousElementSibling.classList.add('selecionado')
+        e.target.previousElementSibling.focus()
+    } 
+
 }));
 
 //Tentativa atual
@@ -102,22 +114,18 @@ function checarResposta() {
 
 //Dicas/cores do jogo
 function adicionarCores(palpValue) {
-//bgVerde - letra no local certo
-//bgAmarelo - letra existente, porém no lugar errado
-//bgVermelho - letra inexistente na palavra
-let trueValue = resposta.toUpperCase()
-let trueArr = trueValue.split('')
-// console.log(trueValue);
-// console.log(trueArr);
+   
+    let trueValue = resposta.toUpperCase()
+    let trueArr = trueValue.split('')
 
-for(let i = 0; i < nodes.length; i++){
-    if(palpValue[i] == trueArr[i]){
-        nodes[i].style.backgroundColor = 'green'
-    } else if(trueValue.includes(palpValue[i])){
-        nodes[i].style.backgroundColor = 'yellow'
-    } else {
-        nodes[i].style.backgroundColor = 'gray'
+    for (let i = 0; i < nodes.length; i++) {
+
+        if (palpValue[i] == trueArr[i]) { //bgVerde - letra no local certo
+            nodes[i].style.backgroundColor = '#538B4E'
+        } else if (trueValue.includes(palpValue[i])) {//bgAmarelo - letra existente, porém no lugar errad
+            nodes[i].style.backgroundColor = '#B69E3B'
+        } else {
+            nodes[i].style.backgroundColor = '#585858'//bgVermelho - letra inexistente na palavra
+        }
     }
-}
-
 }
