@@ -6,7 +6,7 @@ const palavra = ['canoa','balao','arpeu','sagaz','amago','negro','termo','exito'
 const alfabeto = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 let linha = 1
 
-console.log(nodes);
+//console.log(nodes);
 
 //Resposta final
 function SelecionarPalavra() {
