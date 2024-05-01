@@ -15,9 +15,9 @@ let resposta = SelecionarPalavra()
 
 //letra focada
 function focar(b) {
-    letra.forEach((box) => {
-        box.classList.remove('selecionado')
-    })
+    // letra.forEach((box) => {
+    //     box.classList.remove('selecionado') 
+    // })
     b.classList.add('selecionado')
 }
 
@@ -27,25 +27,32 @@ checarPalavra()
 
 //Controle de teclas (De A - Z)
 letra.forEach(addEventListener('keypress', (e) => {
-
     if (alfabeto.includes(e.key)) {
         e.target.value = e.key.toUpperCase()
     } else {
         e.returnValue = false
     }
 
-    if (e.target.nextElementSibling !== null) {//avança uma letra        
+    if (e.target.nextElementSibling !== null) {//avança uma letra     
         e.target.classList.remove('selecionado')
         e.target.nextElementSibling.classList.add('selecionado')
         e.target.nextElementSibling.focus()
+    } else {
+        e.target.classList.remove('selecionado')
     }
 
     if (e.target.value == "" && e.target.previousElementSibling !== null) {//recua uma letra
-        e.target.classList.remove('selecionado')
+        e.target.classList.remove('selecionado')    
         e.target.previousElementSibling.classList.add('selecionado')
         e.target.previousElementSibling.focus()
+    } else {
+        e.target.classList.remove('selecionado')
     }
 
+    if(e.target.value == "" && e.target.nextElementSibling !== null){
+        e.target.nextElementSibling.classList.remove('selecionado')
+    }
+ 
 }));
 
 //Tentativa atual
