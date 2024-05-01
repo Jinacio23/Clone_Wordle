@@ -1,9 +1,15 @@
 const letra = document.querySelectorAll('.letra')
 let fileira = document.querySelector('.coluna.l1')
 let nodes = fileira.children
+const teclas = document.querySelectorAll('.btns')
 
 const palavra = ['canoa', 'balao', 'arpeu', 'sagaz', 'amago', 'negro', 'termo', 'exito', 'mexer', 'nobre', 'senso', 'afeto', 'algoz', 'etica', 'plena', 'fazer', 'tenue', 'mutua', 'assim', 'vigor', 'sutil', 'aquém', 'porém', 'secao', 'fosse', 'poder', 'sanar', 'sobre', 'audaz', 'ideia', 'cerne', 'inato', 'moral', 'desde', 'muito', 'justo', 'honra', 'torpe', 'sonho', 'razao', 'futil', 'etnia', 'icone', 'amigo', 'anexo', 'egide', 'tange', 'lapso', 'haver', 'expor', 'dengo', 'tempo', 'entao']
 const alfabeto = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+let arrVerde = []//letra certa
+let arrAmarela = []//letra errada
+let arrCinza = []//letra inexistente
+
 let linha = 1
 
 //Resposta final
@@ -42,17 +48,17 @@ letra.forEach(addEventListener('keypress', (e) => {
     }
 
     if (e.target.value == "" && e.target.previousElementSibling !== null) {//recua uma letra
-        e.target.classList.remove('selecionado')    
+        e.target.classList.remove('selecionado')
         e.target.previousElementSibling.classList.add('selecionado')
         e.target.previousElementSibling.focus()
     } else {
         e.target.classList.remove('selecionado')
     }
 
-    if(e.target.value == "" && e.target.nextElementSibling !== null){
+    if (e.target.value == "" && e.target.nextElementSibling !== null) {
         e.target.nextElementSibling.classList.remove('selecionado')
     }
- 
+
 }));
 
 //Tentativa atual
@@ -83,19 +89,24 @@ function checarPalavra() {
                         text: "Complete a palavra primeiro",
                         duration: 3000,
                         newWindow: true,
-                        close: true,
+                        close: false,
                         gravity: "top", // `top` or `bottom`
                         position: "center", // `left`, `center` or `right`
                         style: {
-                            background: "#BA4747",
+                            background: "#B69E3B",
                             borderRadius: "16px",
-                            boxShadow: "none"
+                            boxShadow: "none",
+                            fontFamily: "sans-serif",
+                            color: "#7B6D15",
+                            fontWeight: 600
                         },
                         offset: {
                             x: 0,
                             y: 68
                         }
                     }).showToast();
+
+                    
 
                     break
                 } else {
@@ -125,13 +136,16 @@ function checarResposta() {
             text: "Parabéns, você acertou!",
             duration: 3000,
             newWindow: true,
-            close: true,
+            close: false,
             gravity: "top", // `top` or `bottom`
             position: "center", // `left`, `center` or `right`
             style: {
                 background: "#538D4E",
                 borderRadius: "16px",
-                boxShadow: "none"
+                boxShadow: "none",
+                fontFamily: "sans-serif",
+                color: "#2B5028",
+                fontWeight: 600
             },
             offset: {
                 x: 0,
@@ -139,8 +153,7 @@ function checarResposta() {
             }
         }).showToast();
 
-        //reiniciar jogo
-
+        resetGame()
     } else {//proxima tentativa
         tentativaAtual()
         adicionarCores(tentativa)
@@ -153,23 +166,32 @@ function checarResposta() {
             tentativaAtual()
         } else {
             //alert('Você perdeu')
+            arrVerde = []
+            arrAmarela = [] //reset de arrays
+            arrCinza = []
+
             Toastify({
-                text: "Você perdeu!",
+                text: "Então né...Você perdeu!",
                 duration: 3000,
                 newWindow: true,
-                close: true,
+                close: false,
                 gravity: "top", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
                 style: {
                     background: "#BA4747",
                     borderRadius: "16px",
-                    boxShadow: "none"
+                    boxShadow: "none",
+                    fontFamily: "sans-serif",
+                    color: "#5F0F1D",
+                    fontWeight: 600
                 },
                 offset: {
                     x: 0,
                     y: 68
                 }
             }).showToast();
+
+            resetGame()
         }
     }
 }
@@ -183,12 +205,66 @@ function adicionarCores(palpValue) {
     for (let i = 0; i < nodes.length; i++) {
 
         if (palpValue[i] == trueArr[i]) { //bgVerde - letra no local certo
+            if(!arrVerde.includes(palpValue[i])){
+                arrVerde.push(palpValue[i])
+            }
             nodes[i].style.backgroundColor = '#538B4E'
-        } else if (trueValue.includes(palpValue[i])) {//bgAmarelo - letra existente, porém no lugar errad
+
+        } else if (trueValue.includes(palpValue[i])) {//bgAmarelo - letra existente, porém no lugar errado
+            if(!arrAmarela.includes(palpValue[i])){
+                arrAmarela.push(palpValue[i])
+            }
             nodes[i].style.backgroundColor = '#B69E3B'
-        } else {
-            nodes[i].style.backgroundColor = '#585858'//bgVermelho - letra inexistente na palavra
+
+        } else {//bgCinza - letra inexistente na palavra
+            if(!arrCinza.includes(palpValue[i])){
+                arrCinza.push(palpValue[i])
+            }
+            nodes[i].style.backgroundColor = '#585858'
+
         }
+
     }
+    tecladoCores(arrVerde,arrAmarela,arrCinza)
 }
 
+//Cores do teclado
+function tecladoCores (Ve,Am,Ci) {
+    teclas.forEach(tecla => {
+        if(Ve.includes(tecla.innerHTML)){//arrVerde
+            tecla.style.backgroundColor = '#538B4E'
+
+        } else if (Am.includes(tecla.innerHTML)){//arrAmarela
+            tecla.style.backgroundColor = '#B69E3B'
+
+        } else if (Ci.includes(tecla.innerHTML)){//arrCinza
+            tecla.style.backgroundColor = '#585858'
+
+        }
+    })
+}
+
+//Novo jogo/reset
+function resetGame(){
+    Toastify({
+        text: "Jogar de novamente",
+        duration: 9999,
+        newWindow: false,
+        destination: "../index.html",
+        close: false,
+        gravity: "bottom", // `top` or `bottom`
+        position: "center", // `left`, `center` or `right`
+        style: {
+            background: "#F9FF00",
+            borderRadius: "16px",
+            boxShadow: "none",
+            fontFamily: "sans-serif",
+            color: "#000",
+            fontWeight: 600,
+        },
+        offset: {
+            x: 0,
+            y: 68
+        }
+    }).showToast();
+}
